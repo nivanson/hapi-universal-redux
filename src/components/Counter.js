@@ -3,19 +3,18 @@ import Radium from 'radium';
 
 const styles = {
   base: {
-    paddingBottom: 25,
-
+    paddingBottom: 25
   },
   counter: {
     fontSize: '5em',
     color: 'white',
-    marginLeft: 20,
+    marginLeft: 20
   },
   inputContainer: {
     height: 80,
     width: 40,
     float: 'left',
-    marginTop: 15,
+    marginTop: 15
   },
   button: {
     height: 38,
@@ -26,8 +25,8 @@ const styles = {
     background: 'none',
     color: 'white',
     margin: '0 5px',
-    float: 'left',
-  },
+    float: 'left'
+  }
 };
 
 @Radium
@@ -35,7 +34,7 @@ export default class Counter extends React.Component {
   static propTypes = {
     counter: React.PropTypes.number.isRequired,
     plus: React.PropTypes.func.isRequired,
-    minus: React.PropTypes.func.isRequired,
+    minus: React.PropTypes.func.isRequired
   }
 
   render() {

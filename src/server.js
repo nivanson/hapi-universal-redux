@@ -59,10 +59,10 @@ server.ext('onPreResponse', (request, reply) => {
   }
 
   Router.run(routes, request.path, (Root) => {
-    Transmit.renderToString(Root, { initialState: store.getState() })
-    .then(({reactString, reactData}) => {
-      let output = (
-        `<!doctype html>
+    Transmit.renderToString(Root, {initialState: store.getState()})
+      .then(({reactString, reactData}) => {
+        let output = (
+          `<!doctype html>
         <html lang='en-us'>
           <head>
             <meta charset='utf-8'>
@@ -73,14 +73,14 @@ server.ext('onPreResponse', (request, reply) => {
             <div id='react-root'>${reactString}</div>
           </body>
         </html>`
-      );
+        );
 
-      const webserver = process.env.NODE_ENV === 'production' ? '' : '//localhost:8080';
-      output = Transmit.injectIntoMarkup(output, reactData, [`${webserver}/dist/client.js`]);
+        const webserver = process.env.NODE_ENV === 'production' ? '' : '//localhost:8080';
+        output = Transmit.injectIntoMarkup(output, reactData, [`${webserver}/dist/client.js`]);
 
-      reply(output);
-    }).catch((error) => {
-      reply(error.stack).type('text/plain').code(500);
-    });
+        reply(output);
+      }).catch((error) => {
+        reply(error.stack).type('text/plain').code(500);
+      });
   });
 });

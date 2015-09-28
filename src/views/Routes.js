@@ -9,7 +9,7 @@ import Main from 'views/Main';
  * @class Routes
  */
 export default (
-	<Route handler={AppContainer}>
-		<Route path="/" name="main" handler={Main} />
-	</Route>
+  <Route handler={AppContainer}>
+    <Route path="/" name="main" handler={Main} />
+  </Route>
 );

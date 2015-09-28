@@ -2,8 +2,8 @@ import React from 'react';
 import Transmit from 'react-transmit';
 
 import Radium from 'radium';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 import * as CounterActions from 'actions/CounterActions';
 import Counter from 'components/Counter';
 
@@ -15,36 +15,35 @@ const styles = {
     width: '380px',
     margin: '10px auto',
     background: '#222',
-    boxShadow: '15px 5px #6A6A6E',
+    boxShadow: '15px 5px #6A6A6E'
   },
   new: {
-    color: 'red',
+    color: 'red'
   },
   github: {
     position: 'absolute',
     top: 0,
     right: 0,
-    border: 0,
+    border: 0
   },
   link: {
     color: 'white',
-    textDecoration: 'none',
+    textDecoration: 'none'
   },
   avatar: {
     borderRadius: '50%',
     width: 32,
     height: 32,
-    margin: '0 2px 2px 0',
-  },
+    margin: '0 2px 2px 0'
+  }
 };
 
 /**
  * Redux connecting to the Main React application entry-point for both the server and client.
  */
 @connect(state => ({
-  counter: state.counter,
+  counter: state.counter
 }))
-
 @Radium
 class Main extends React.Component {
   /**
@@ -82,13 +81,14 @@ class Main extends React.Component {
       transmitRemainingStargazers();
     }
   }
+
   /**
    * Runs on server and client.
    */
   render() {
     const repositoryUrl = 'https://github.com/luandro/hapi-universal-redux';
-    const avatarSize    = 32;
-    const avatarUrl     = (id) => `https://avatars.githubusercontent.com/u/${id}?v=3&s=${avatarSize}`;
+    const avatarSize = 32;
+    const avatarUrl = (id) => `https://avatars.githubusercontent.com/u/${id}?v=3&s=${avatarSize}`;
     /**
      * These are the Redux and Transmit props.
      */
@@ -97,17 +97,22 @@ class Main extends React.Component {
     return (
       <div style={styles.base}>
         <a style={styles.github} href={repositoryUrl}>
-          <img src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" />
+          <img src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67"
+               alt="Fork me on GitHub" />
         </a>
         <h1>
           <img src="/favicon.ico" alt="icon" />
-          <br/> Welcome to Hapi Universal Redux.
+          <br /> Welcome to Hapi Universal Redux.
         </h1>
-        <h3>A fork from <a style={styles.link} href="https://github.com/RickWong/react-isomorphic-starterkit">React Isomorphic Starterkit</a></h3>
+        <h3>A fork from <a style={styles.link}
+                           href="https://github.com/RickWong/react-isomorphic-starterkit">React Isomorphic Starterkit</a>
+        </h3>
         <h3>Features</h3>
         <ul>
-          <li><span style={styles.new}>NEW </span>Redux for managing app state</li>
-          <li><span style={styles.new}>NEW </span>Radium for styling components</li>
+          <li><span style={styles.new}>NEW </span>Redux for managing app state
+          </li>
+          <li><span style={styles.new}>NEW </span>Radium for styling components
+          </li>
           <li>Fully automated with npm run scripts</li>
           <li>Server hot reloads with piping and Hapi.js</li>
           <li>Webpack for watch + production builds</li>
@@ -127,11 +132,14 @@ class Main extends React.Component {
           <a href={repositoryUrl} title="you here? star us!">
             {stargazers.map((user) => {
               return (
-                <img key={user.id} style={styles.avatar} src={avatarUrl(user.id)}
-                     title={user.login} alt={user.login} />
+                <img key={user.id}
+                     style={styles.avatar}
+                     src={avatarUrl(user.id)}
+                     title={user.login}
+                     alt={user.login} />
               );
             })}
-            <img style={styles.avatar} src={avatarUrl(0)} alt="you?"/>
+            <img style={styles.avatar} src={avatarUrl(0)} alt="you?" />
           </a>
         </p>
       </div>
@@ -147,13 +155,13 @@ export default Transmit.createContainer(Main, {
   queryParams: {
     prevStargazers: [],
     nextPage: 1,
-    pagesToFetch: 10,
+    pagesToFetch: 10
   },
   queries: {
     /**
      * Return a Promise of the previous stargazers + the newly fetched stargazers.
      */
-    allStargazers(queryParams) {
+      allStargazers(queryParams) {
       /**
        * On the server, connect to GitHub directly.
        */
@@ -173,23 +181,23 @@ export default Transmit.createContainer(Main, {
           githubApi + '/repos/luandro/hapi-universal-redux/stargazers' +
           `?per_page=100&page=${queryParams.nextPage}`
         ).then((response) => response.json()).then((body) => {
-          /**
-           * Stop fetching if the response body is empty.
-           */
-          if (!body || !body.length) {
-            queryParams.pagesToFetch = 0;
+            /**
+             * Stop fetching if the response body is empty.
+             */
+            if (!body || !body.length) {
+              queryParams.pagesToFetch = 0;
 
-            return queryParams.prevStargazers;
-          }
+              return queryParams.prevStargazers;
+            }
 
-          /**
-           * Pick id and username from fetched stargazers.
-           */
-          const fechedStargazers = body.map(({id, login}) => ({id, login}));
+            /**
+             * Pick id and username from fetched stargazers.
+             */
+            const fechedStargazers = body.map(({id, login}) => ({id, login}));
 
-          return queryParams.prevStargazers.concat(fechedStargazers);
-        });
+            return queryParams.prevStargazers.concat(fechedStargazers);
+          });
       }
-    },
-  },
+    }
+  }
 });
